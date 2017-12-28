@@ -1,19 +1,19 @@
 [base]
 # 健康度检查的url
-check_url = http://localhost:8080/main/checkpreload.htm
+check_url = http://localhost:8080/task/login/authAjax
 # 最大重试次数，当健康度检查的url连续不成功达到最大重试次数时，执行重启等操作
 retry_times = 3
 # 每次健康度检查之间的间隔
-delay_sec = 5
+delay_sec = 10
 # 服务重启后，重新开始健康度检查的时间间隔
-delay_sec_restart = 60
+delay_sec_restart = 300
 # http请求的超时时间(s)，请求响应的时长超过该事件，即认定健康度检查失败
 timeout = 1
 # 健康度检查失败时所需要执行的脚本
-fail_command = tomcat_restart.sh apache-tomcat-7.0.82-ding-main
+fail_command = tomcat_restart.sh tomcat8_1 
 
 [log]
 # log日志文件所在的位置
 log_file = ./rsq_health_check.log
 # log日志的输出level
-log_level = DEBUG
+log_level = INFO
