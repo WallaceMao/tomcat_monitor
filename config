@@ -10,7 +10,8 @@ delay_sec_restart = 300
 # http请求的超时时间(s)，请求响应的时长超过该事件，即认定健康度检查失败
 timeout = 1
 # 健康度检查失败时所需要执行的脚本
-fail_command = tomcat_restart.sh tomcat8_1 
+fail_command = ./tomcat_restart.sh 
+fail_command_args = tomcat8_1
 
 [log]
 # log日志文件所在的位置

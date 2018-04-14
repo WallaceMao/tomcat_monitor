@@ -29,6 +29,7 @@ delay_sec_restart = cf.getint('base', 'delay_sec_restart')
 timeout = cf.getint('base', 'timeout')
 # 健康度检查失败时所需要执行的脚本
 fail_command = cf.get('base', 'fail_command')
+fail_command_args = cf.get('base', 'fail_command_args')
 
 # basic config
 logging.basicConfig(filename=log_file, level=log_level, format='%(asctime)s %(levelname)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -56,10 +57,9 @@ while 1:
     if fail_times >= retry_times:
       logging.error('reach max try times, trying to restart application...')
       # restart server
-      logging.debug('trying to restart server')
-      resp = subprocess.call(['bash', fail_command])
-      logging.info('=================')
-      logging.debug('command response after restart server: %s' % resp)
+      logging.info('====trying to restart server')
+      resp = subprocess.call(['sh', fail_command, fail_command_args])
+      logging.info('====command response after restart server: %s' % resp)
       fail_times = 0
       time.sleep(delay_sec_restart) 
     else:

@@ -1,0 +1,63 @@
+#!/bin/bash
+# This scripts is used to make tomcat_monitor a system service for CentOS 6.x. 
+# Copy this file to the path '/etc/init.d' and you can use 'service tomcat-monitor {start|stop|status}' to start, stop or show status of tomcat_monitor scripts.
+# tomcat monitor
+# author: Wallace Mao
+# email: 421503610@qq.com
+
+# Source function library.
+. /etc/init.d/functions
+
+RETVAL=0
+prog="tomcat-monitor"
+PIDFILE=/var/run/${prog}.pid
+ROOTPATH=/srv/salt/scripts/health/tomcat_monitor
+
+start() {
+        echo -n "Starting $prog: "
+        cd $ROOTPATH
+        python -u ./health_check.py &
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && echo $!>$PIDFILE && echo "started"
+        return $RETVAL
+}
+
+stop() {
+        echo -n "Shutting down $prog: "
+        kill `cat $PIDFILE`
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && rm -f $PIDFILE && echo "stopped"
+        return $RETVAL
+}
+
+status() {
+        echo -n "Checking $prog status: "
+        if [ -e $PIDFILE ]; then
+          echo "running... pid = `cat $PIDFILE`"
+        else
+          echo "stopped"
+        fi
+        RETVAL=$?
+        return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
+exit $RETVAL
