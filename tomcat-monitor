@@ -16,7 +16,7 @@ ROOTPATH=/srv/salt/scripts/health/tomcat_monitor
 start() {
         echo -n "Starting $prog: "
         cd $ROOTPATH
-        python -u ./health_check.py &
+        python -u ./health_check.py >/dev/null 2>&1 &
         RETVAL=$?
         [ $RETVAL -eq 0 ] && echo $!>$PIDFILE && echo "started"
         return $RETVAL
